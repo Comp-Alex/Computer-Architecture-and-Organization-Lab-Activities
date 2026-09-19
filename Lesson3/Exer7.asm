@@ -1,0 +1,40 @@
+.MODEL SMALL
+.STACK 100h
+.CODE
+main PROC
+    mov cx,26
+    mov bl,41h
+    mov bh,7Ah
+    xor si,si
+next_pair:
+    push cx
+    mov cx,si
+indent:
+    mov dl,20h
+    mov ah,02h
+    int 21h
+    loop indent
+    pop cx
+    mov dl,bl
+    mov ah,02h
+    int 21h
+    mov dl,20h
+    mov ah,02h
+    int 21h
+    mov dl,bh
+    mov ah,02h
+    int 21h
+    mov dl,0Dh
+    mov ah,02h
+    int 21h
+    mov dl,0Ah
+    mov ah,02h
+    int 21h
+    inc bl
+    dec bh
+    inc si
+    loop next_pair
+    mov ax,4C00h
+    int 21h
+main ENDP
+END main

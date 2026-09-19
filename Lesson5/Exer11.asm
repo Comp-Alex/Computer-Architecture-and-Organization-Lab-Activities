@@ -1,0 +1,91 @@
+.MODEL SMALL
+.STACK 100h
+.CODE
+main PROC
+    mov ax,0003h
+    int 10h
+    mov dh,5
+    mov dl,10
+    mov si,4
+    mov bl,0Ch
+    mov al,20h
+    mov cx,4
+    push ax
+    mov ah,02h
+    int 10h
+    pop ax
+    mov ah,09h
+    mov bh,0
+    int 10h
+    mov dh,5
+    mov dl,18
+    mov bl,0Eh
+    mov al,20h
+    mov cx,4
+    push ax
+    mov ah,02h
+    int 10h
+    pop ax
+    mov ah,09h
+    mov bh,0
+    int 10h
+    mov dh,5
+    mov dl,26
+    mov bl,09h
+    mov al,20h
+    mov cx,4
+    push ax
+    mov ah,02h
+    int 10h
+    pop ax
+    mov ah,09h
+    mov bh,0
+    int 10h
+    mov dh,7
+    mov dl,8
+    mov bl,07h
+    mov si,OFFSET labels
+    add si,0
+    mov cx,1
+    mov al,52h
+    push ax
+    mov ah,02h
+    int 10h
+    pop ax
+    mov ah,09h
+    mov bh,0
+    int 10h
+    mov dh,8
+    mov dl,8
+    mov bl,0Ch
+    mov si,OFFSET labels
+    add si,0
+    mov cx,1
+    mov al,52h
+    push ax
+    mov ah,02h
+    int 10h
+    pop ax
+    mov ah,09h
+    mov bh,0
+    int 10h
+    mov dh,9
+    mov dl,8
+    mov bl,0Eh
+    mov si,OFFSET labels
+    add si,0
+    mov cx,1
+    mov al,52h
+    push ax
+    mov ah,02h
+    int 10h
+    pop ax
+    mov ah,09h
+    mov bh,0
+    int 10h
+    mov ax,4C00h
+    int 21h
+main ENDP
+.DATA
+labels db 52h
+END main

@@ -1,0 +1,60 @@
+.MODEL SMALL
+.STACK 100h
+.CODE
+main PROC
+    mov ax,0003h
+    int 10h
+    mov dh,3
+    mov dl,28
+    mov bl,0Bh
+    mov al,2Bh
+    mov cx,20
+    mov ah,02h
+    int 10h
+    mov ah,09h
+    mov bh,0
+    int 10h
+    mov dh,4
+    mov dl,28
+    mov bl,01h
+    mov al,7Ch
+    mov cx,20
+    mov ah,02h
+    int 10h
+    mov ah,09h
+    mov bh,0
+    int 10h
+    mov dh,5
+    mov dl,28
+    mov bl,07h
+    mov al,7Ch
+    mov cx,20
+    mov ah,02h
+    int 10h
+    mov ah,09h
+    mov bh,0
+    int 10h
+    mov dh,6
+    mov dl,28
+    mov bl,0Ah
+    mov al,7Ch
+    mov cx,20
+    mov ah,02h
+    int 10h
+    mov ah,09h
+    mov bh,0
+    int 10h
+    mov dh,7
+    mov dl,28
+    mov bl,0Bh
+    mov al,2Bh
+    mov cx,20
+    mov ah,02h
+    int 10h
+    mov ah,09h
+    mov bh,0
+    int 10h
+    mov ax,4C00h
+    int 21h
+main ENDP
+END main
