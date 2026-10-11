@@ -8,4 +8,6 @@ DOS string output and multi-line text displays.
 | Exer9 | [Exer9.asm](Exer9.asm) | [Exer9 guide](Exer9.README.md) |
 | Exer10 | [Exer10.asm](Exer10.asm) | [Exer10 guide](Exer10.README.md) |
 
+[Sample problems](SampleProblems.md)
+
 [Back to the project index](../README.md)

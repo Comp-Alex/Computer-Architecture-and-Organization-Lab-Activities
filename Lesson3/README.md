@@ -9,4 +9,6 @@ Character generation, loops, and formatted output.
 | Exer6 | [Exer6.asm](Exer6.asm) | [Exer6 guide](Exer6.README.md) |
 | Exer7 | [Exer7.asm](Exer7.asm) | [Exer7 guide](Exer7.README.md) |
 
+[Sample problems](SampleProblems.md)
+
 [Back to the project index](../README.md)

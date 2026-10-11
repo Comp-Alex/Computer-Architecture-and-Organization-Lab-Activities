@@ -1,0 +1,19 @@
+.MODEL SMALL
+.STACK 100h
+
+.DATA
+msg DB 'PARALLEL PORT SAMPLE$'
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+
+    LEA DX, msg
+    MOV AH, 09h
+    INT 21h
+
+    MOV AX, 4C00h
+    INT 21h
+MAIN ENDP
+END MAIN

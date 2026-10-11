@@ -10,4 +10,6 @@ BIOS video services, cursor positioning, colors, and screen graphics.
 | Exer14 | [Exer14.asm](Exer14.asm) | [Exer14 guide](Exer14.README.md) |
 | Exer15 | [Exer15.asm](Exer15.asm) | [Exer15 guide](Exer15.README.md) |
 
+[Sample problems](SampleProblems.md)
+
 [Back to the project index](../README.md)
