@@ -1,0 +1,563 @@
+{
+  "project": "Computer Architecture and Organization Lab Activities",
+  "repository_url": "https://github.com/Comp-Alex/Computer-Architecture-and-Organization-Lab-Activities",
+  "purpose": "A hands-on computer architecture and organization laboratory. Its lessons teach 16-bit x86 assembly programming through DOS/TASM exercises, sample programs, and peripheral-I/O activities.",
+  "lessons": [
+    {
+      "number": 1,
+      "name": "Lesson1",
+      "title": "Lesson 1",
+      "path": "Lesson1/README.md",
+      "dashboard_path": "../Lesson1/README.md",
+      "description": "The manual's Lesson 1 covers the TASM editor environment and has no numbered assembly exercise.",
+      "exercises": [],
+      "samples": [
+        {
+          "name": "Sample1",
+          "source": "Lesson1/Sample1.asm",
+          "dashboard_source": "../Lesson1/Sample1.asm"
+        },
+        {
+          "name": "SampleProb1",
+          "source": "Lesson1/SampleProb1.asm",
+          "dashboard_source": "../Lesson1/SampleProb1.asm"
+        },
+        {
+          "name": "SampleProb2",
+          "source": "Lesson1/SampleProb2.asm",
+          "dashboard_source": "../Lesson1/SampleProb2.asm"
+        },
+        {
+          "name": "SampleProblems",
+          "source": "Lesson1/SampleProblems.asm",
+          "dashboard_source": "../Lesson1/SampleProblems.asm"
+        },
+        {
+          "name": "test",
+          "source": "Lesson1/test.asm",
+          "dashboard_source": "../Lesson1/test.asm"
+        }
+      ],
+      "has_sample_problems": true
+    },
+    {
+      "number": 2,
+      "name": "Lesson2",
+      "title": "Lesson 2",
+      "path": "Lesson2/README.md",
+      "dashboard_path": "../Lesson2/README.md",
+      "description": "Basic DOS character output using `INT 21h`.",
+      "exercises": [
+        {
+          "name": "Exer1",
+          "source": "Lesson2/Exer1.asm",
+          "dashboard_source": "../Lesson2/Exer1.asm",
+          "guide": "Lesson2/Exer1.README.md",
+          "dashboard_guide": "../Lesson2/Exer1.README.md",
+          "description": "Prints `Alexander John` one character at a time, followed by a new line."
+        },
+        {
+          "name": "Exer2",
+          "source": "Lesson2/Exer2.asm",
+          "dashboard_source": "../Lesson2/Exer2.asm",
+          "guide": "Lesson2/Exer2.README.md",
+          "dashboard_guide": "../Lesson2/Exer2.README.md",
+          "description": "Displays personal-information fields as text lines using direct character output."
+        },
+        {
+          "name": "Exer3",
+          "source": "Lesson2/Exer3.asm",
+          "dashboard_source": "../Lesson2/Exer3.asm",
+          "guide": "Lesson2/Exer3.README.md",
+          "dashboard_guide": "../Lesson2/Exer3.README.md",
+          "description": "Prints a four-line bordered name box containing `Alexander John` and `Balagso`."
+        }
+      ],
+      "samples": [],
+      "has_sample_problems": true
+    },
+    {
+      "number": 3,
+      "name": "Lesson3",
+      "title": "Lesson 3",
+      "path": "Lesson3/README.md",
+      "dashboard_path": "../Lesson3/README.md",
+      "description": "Character generation, loops, and formatted output.",
+      "exercises": [
+        {
+          "name": "Exer4",
+          "source": "Lesson3/Exer4.asm",
+          "dashboard_source": "../Lesson3/Exer4.asm",
+          "guide": "Lesson3/Exer4.README.md",
+          "dashboard_guide": "../Lesson3/Exer4.README.md",
+          "description": "Generates and prints the pairs `AaBbCc...Zz`."
+        },
+        {
+          "name": "Exer5",
+          "source": "Lesson3/Exer5.asm",
+          "dashboard_source": "../Lesson3/Exer5.asm",
+          "guide": "Lesson3/Exer5.README.md",
+          "dashboard_guide": "../Lesson3/Exer5.README.md",
+          "description": "Generates alternating pairs beginning with `zA`, then `yB`, through `aZ`."
+        },
+        {
+          "name": "Exer6",
+          "source": "Lesson3/Exer6.asm",
+          "dashboard_source": "../Lesson3/Exer6.asm",
+          "guide": "Lesson3/Exer6.README.md",
+          "dashboard_guide": "../Lesson3/Exer6.README.md",
+          "description": "Prints pairs such as `aZ`, `bY`, and `cX`, with one pair per line."
+        },
+        {
+          "name": "Exer7",
+          "source": "Lesson3/Exer7.asm",
+          "dashboard_source": "../Lesson3/Exer7.asm",
+          "guide": "Lesson3/Exer7.README.md",
+          "dashboard_guide": "../Lesson3/Exer7.README.md",
+          "description": "Prints pairs such as `A z`, `B y`, and `C x` in a descending diagonal alignment."
+        }
+      ],
+      "samples": [
+        {
+          "name": "sample1",
+          "source": "Lesson3/sample1.asm",
+          "dashboard_source": "../Lesson3/sample1.asm"
+        },
+        {
+          "name": "sample2",
+          "source": "Lesson3/sample2.asm",
+          "dashboard_source": "../Lesson3/sample2.asm"
+        },
+        {
+          "name": "sample3",
+          "source": "Lesson3/sample3.asm",
+          "dashboard_source": "../Lesson3/sample3.asm"
+        },
+        {
+          "name": "sample4",
+          "source": "Lesson3/sample4.asm",
+          "dashboard_source": "../Lesson3/sample4.asm"
+        },
+        {
+          "name": "sample5",
+          "source": "Lesson3/sample5.asm",
+          "dashboard_source": "../Lesson3/sample5.asm"
+        },
+        {
+          "name": "sample6",
+          "source": "Lesson3/sample6.asm",
+          "dashboard_source": "../Lesson3/sample6.asm"
+        }
+      ],
+      "has_sample_problems": true
+    },
+    {
+      "number": 4,
+      "name": "Lesson4",
+      "title": "Lesson 4",
+      "path": "Lesson4/README.md",
+      "dashboard_path": "../Lesson4/README.md",
+      "description": "DOS string output and multi-line text displays.",
+      "exercises": [
+        {
+          "name": "Exer8",
+          "source": "Lesson4/Exer8.asm",
+          "dashboard_source": "../Lesson4/Exer8.asm",
+          "guide": "Lesson4/Exer8.README.md",
+          "dashboard_guide": "../Lesson4/Exer8.README.md",
+          "description": "Displays a multi-line message with DOS string output using hexadecimal ASCII byte values."
+        },
+        {
+          "name": "Exer9",
+          "source": "Lesson4/Exer9.asm",
+          "dashboard_source": "../Lesson4/Exer9.asm",
+          "guide": "Lesson4/Exer9.README.md",
+          "dashboard_guide": "../Lesson4/Exer9.README.md",
+          "description": "Displays a personalized calling card using DOS string output."
+        },
+        {
+          "name": "Exer10",
+          "source": "Lesson4/Exer10.asm",
+          "dashboard_source": "../Lesson4/Exer10.asm",
+          "guide": "Lesson4/Exer10.README.md",
+          "dashboard_guide": "../Lesson4/Exer10.README.md",
+          "description": "Displays a list of favorite television shows using DOS string output."
+        }
+      ],
+      "samples": [
+        {
+          "name": "sample8",
+          "source": "Lesson4/sample8.asm",
+          "dashboard_source": "../Lesson4/sample8.asm"
+        },
+        {
+          "name": "sample9",
+          "source": "Lesson4/sample9.asm",
+          "dashboard_source": "../Lesson4/sample9.asm"
+        }
+      ],
+      "has_sample_problems": true
+    },
+    {
+      "number": 5,
+      "name": "Lesson5",
+      "title": "Lesson 5",
+      "path": "Lesson5/README.md",
+      "dashboard_path": "../Lesson5/README.md",
+      "description": "BIOS video services, cursor positioning, colors, and screen graphics.",
+      "exercises": [
+        {
+          "name": "Exer11",
+          "source": "Lesson5/Exer11.asm",
+          "dashboard_source": "../Lesson5/Exer11.asm",
+          "guide": "Lesson5/Exer11.README.md",
+          "dashboard_guide": "../Lesson5/Exer11.README.md",
+          "description": "Displays the standard four-band resistor color-code digits, multipliers, and tolerance values with BIOS video interrupt `10h`."
+        },
+        {
+          "name": "Exer12",
+          "source": "Lesson5/Exer12.asm",
+          "dashboard_source": "../Lesson5/Exer12.asm",
+          "guide": "Lesson5/Exer12.README.md",
+          "dashboard_guide": "../Lesson5/Exer12.README.md",
+          "description": "Displays a custom colored logo using BIOS cursor positioning and character output."
+        },
+        {
+          "name": "Exer13",
+          "source": "Lesson5/Exer13.asm",
+          "dashboard_source": "../Lesson5/Exer13.asm",
+          "guide": "Lesson5/Exer13.README.md",
+          "dashboard_guide": "../Lesson5/Exer13.README.md",
+          "description": "Displays the standard seven-bar television color sequence and a lower reference strip, followed by local network identification."
+        },
+        {
+          "name": "Exer14",
+          "source": "Lesson5/Exer14.asm",
+          "dashboard_source": "../Lesson5/Exer14.asm",
+          "guide": "Lesson5/Exer14.README.md",
+          "dashboard_guide": "../Lesson5/Exer14.README.md",
+          "description": "Draws a colored mobile phone and sample message on the LCD using BIOS video interrupt `10h`."
+        },
+        {
+          "name": "Exer15",
+          "source": "Lesson5/Exer15.asm",
+          "dashboard_source": "../Lesson5/Exer15.asm",
+          "guide": "Lesson5/Exer15.README.md",
+          "dashboard_guide": "../Lesson5/Exer15.README.md",
+          "description": "Draws an eight-by-eight checkerboard with alternating colored squares."
+        }
+      ],
+      "samples": [
+        {
+          "name": "sample10",
+          "source": "Lesson5/sample10.asm",
+          "dashboard_source": "../Lesson5/sample10.asm"
+        },
+        {
+          "name": "sample11",
+          "source": "Lesson5/sample11.asm",
+          "dashboard_source": "../Lesson5/sample11.asm"
+        }
+      ],
+      "has_sample_problems": true
+    },
+    {
+      "number": 6,
+      "name": "Lesson6",
+      "title": "Lesson 6",
+      "path": "Lesson6/README.md",
+      "dashboard_path": "../Lesson6/README.md",
+      "description": "Keyboard input, text buffers, and an interactive game.",
+      "exercises": [
+        {
+          "name": "Exer16",
+          "source": "Lesson6/Exer16.asm",
+          "dashboard_source": "../Lesson6/Exer16.asm",
+          "guide": "Lesson6/Exer16.README.md",
+          "dashboard_guide": "../Lesson6/Exer16.README.md",
+          "description": "Prompts for student details, then displays them in a positioned record form for the University of Batangas Lipa City."
+        },
+        {
+          "name": "Exer17",
+          "source": "Lesson6/Exer17.asm",
+          "dashboard_source": "../Lesson6/Exer17.asm",
+          "guide": "Lesson6/Exer17.README.md",
+          "dashboard_guide": "../Lesson6/Exer17.README.md",
+          "description": "Runs a two-player paper-rock-scissors game with hidden choices and a replay option."
+        }
+      ],
+      "samples": [
+        {
+          "name": "sample12",
+          "source": "Lesson6/sample12.asm",
+          "dashboard_source": "../Lesson6/sample12.asm"
+        },
+        {
+          "name": "sample13",
+          "source": "Lesson6/sample13.asm",
+          "dashboard_source": "../Lesson6/sample13.asm"
+        },
+        {
+          "name": "sample14",
+          "source": "Lesson6/sample14.asm",
+          "dashboard_source": "../Lesson6/sample14.asm"
+        },
+        {
+          "name": "sample15",
+          "source": "Lesson6/sample15.asm",
+          "dashboard_source": "../Lesson6/sample15.asm"
+        }
+      ],
+      "has_sample_problems": true
+    },
+    {
+      "number": 7,
+      "name": "Lesson7",
+      "title": "Lesson 7",
+      "path": "Lesson7/README.md",
+      "dashboard_path": "../Lesson7/README.md",
+      "description": "The manual's Lesson 7 covers parallel-port interfacing and sample applications but has no numbered Skills Review exercise.",
+      "exercises": [],
+      "samples": [
+        {
+          "name": "Sample1",
+          "source": "Lesson7/Sample1.asm",
+          "dashboard_source": "../Lesson7/Sample1.asm"
+        },
+        {
+          "name": "SampleProblems",
+          "source": "Lesson7/SampleProblems.asm",
+          "dashboard_source": "../Lesson7/SampleProblems.asm"
+        }
+      ],
+      "has_sample_problems": true
+    }
+  ],
+  "topics": [
+    {
+      "id": "cpu",
+      "title": "CPU architecture",
+      "description": "8086 foundations, registers, control flow, and processor services.",
+      "label": "PROCESSOR",
+      "lessons": [
+        {
+          "number": 1,
+          "title": "Lesson 1"
+        },
+        {
+          "number": 2,
+          "title": "Lesson 2"
+        },
+        {
+          "number": 3,
+          "title": "Lesson 3"
+        },
+        {
+          "number": 4,
+          "title": "Lesson 4"
+        },
+        {
+          "number": 5,
+          "title": "Lesson 5"
+        },
+        {
+          "number": 6,
+          "title": "Lesson 6"
+        },
+        {
+          "number": 7,
+          "title": "Lesson 7"
+        }
+      ]
+    },
+    {
+      "id": "memory",
+      "title": "Memory systems",
+      "description": "Segmented programs, data and stack areas, and input buffers.",
+      "label": "DATA",
+      "lessons": [
+        {
+          "number": 1,
+          "title": "Lesson 1"
+        },
+        {
+          "number": 2,
+          "title": "Lesson 2"
+        },
+        {
+          "number": 3,
+          "title": "Lesson 3"
+        },
+        {
+          "number": 4,
+          "title": "Lesson 4"
+        },
+        {
+          "number": 5,
+          "title": "Lesson 5"
+        },
+        {
+          "number": 6,
+          "title": "Lesson 6"
+        },
+        {
+          "number": 7,
+          "title": "Lesson 7"
+        }
+      ]
+    },
+    {
+      "id": "instructions",
+      "title": "Instruction sets",
+      "description": "Assembly instructions, DOS and BIOS interrupts, and peripheral I/O.",
+      "label": "X86",
+      "lessons": [
+        {
+          "number": 1,
+          "title": "Lesson 1"
+        },
+        {
+          "number": 2,
+          "title": "Lesson 2"
+        },
+        {
+          "number": 3,
+          "title": "Lesson 3"
+        },
+        {
+          "number": 4,
+          "title": "Lesson 4"
+        },
+        {
+          "number": 5,
+          "title": "Lesson 5"
+        },
+        {
+          "number": 6,
+          "title": "Lesson 6"
+        },
+        {
+          "number": 7,
+          "title": "Lesson 7"
+        }
+      ]
+    },
+    {
+      "id": "labs",
+      "title": "Lab activities",
+      "description": "Numbered exercises, sample programs, and lesson problem sets.",
+      "label": "PRACTICE",
+      "lessons": [
+        {
+          "number": 1,
+          "title": "Lesson 1"
+        },
+        {
+          "number": 2,
+          "title": "Lesson 2"
+        },
+        {
+          "number": 3,
+          "title": "Lesson 3"
+        },
+        {
+          "number": 4,
+          "title": "Lesson 4"
+        },
+        {
+          "number": 5,
+          "title": "Lesson 5"
+        },
+        {
+          "number": 6,
+          "title": "Lesson 6"
+        },
+        {
+          "number": 7,
+          "title": "Lesson 7"
+        }
+      ]
+    }
+  ],
+  "roadmap": [
+    {
+      "status": "NEXT",
+      "title": "Validate programs in a DOS-compatible environment",
+      "detail": "Add reproducible TASM/DOSBox smoke checks for the 38 assembly sources. The current material describes manual assembly and execution rather than an automated run harness."
+    },
+    {
+      "status": "NEXT",
+      "title": "Add context for sample programs",
+      "detail": "Add brief purpose and learning-outcome notes for 20 sample assembly programs without dedicated guides; lesson-level notes currently provide the shared context."
+    },
+    {
+      "status": "ONGOING",
+      "title": "Keep the lesson index in sync",
+      "detail": "The analyzer currently discovers 7 lesson folders (through Lesson 7). Add new lesson folders, source files, and guides to have them indexed automatically."
+    }
+  ],
+  "achievements": [
+    "Organized **7 lessons** into a browsable, automatically maintained curriculum.",
+    "Indexed **17 numbered exercises** with **17 guides** (100% guide coverage).",
+    "Cataloged **21 sample programs** alongside the exercises.",
+    "Tracked **38 assembly source files** across the repository."
+  ],
+  "totals": {
+    "files": 80,
+    "source_files": 43,
+    "lessons": 7,
+    "exercises": 17,
+    "assembly_files": 38,
+    "samples": 21,
+    "guides": 17,
+    "markdown_files": 34,
+    "guide_coverage": 100.0
+  },
+  "file_types": [
+    {
+      "extension": ".asm",
+      "label": "Assembly",
+      "count": 38
+    },
+    {
+      "extension": ".md",
+      "label": "Markdown",
+      "count": 34
+    },
+    {
+      "extension": ".py",
+      "label": "Python",
+      "count": 2
+    },
+    {
+      "extension": ".css",
+      "label": "CSS",
+      "count": 1
+    },
+    {
+      "extension": ".html",
+      "label": "HTML",
+      "count": 1
+    },
+    {
+      "extension": ".js",
+      "label": "JavaScript",
+      "count": 1
+    },
+    {
+      "extension": ".json",
+      "label": "JSON",
+      "count": 1
+    },
+    {
+      "extension": ".svg",
+      "label": "SVG",
+      "count": 1
+    },
+    {
+      "extension": ".yml",
+      "label": "YAML",
+      "count": 1
+    }
+  ]
+}

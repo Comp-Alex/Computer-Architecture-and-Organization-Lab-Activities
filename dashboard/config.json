@@ -1,0 +1,77 @@
+{
+  "project_name": "Computer Architecture and Organization Lab Activities",
+  "repository_url": "https://github.com/Comp-Alex/Computer-Architecture-and-Organization-Lab-Activities",
+  "excluded_directories": [
+    ".git",
+    "__pycache__",
+    ".venv",
+    "venv",
+    "node_modules",
+    ".pytest_cache"
+  ],
+  "topics": [
+    {
+      "id": "cpu",
+      "title": "CPU architecture",
+      "label": "PROCESSOR",
+      "description": "8086 foundations, registers, control flow, and processor services.",
+      "keywords": [
+        "8086",
+        "x86",
+        "processor",
+        "register",
+        "registers",
+        "flags",
+        "tasm",
+        "cpu"
+      ]
+    },
+    {
+      "id": "memory",
+      "title": "Memory systems",
+      "label": "DATA",
+      "description": "Segmented programs, data and stack areas, and input buffers.",
+      "keywords": [
+        "memory",
+        "segment",
+        "segmented",
+        "stack",
+        "buffer",
+        "offset",
+        "address",
+        ".data",
+        ".stack"
+      ]
+    },
+    {
+      "id": "instructions",
+      "title": "Instruction sets",
+      "label": "X86",
+      "description": "Assembly instructions, DOS and BIOS interrupts, and peripheral I/O.",
+      "keywords": [
+        "instruction",
+        "assembly",
+        "interrupt",
+        "int 21h",
+        "int 10h",
+        "bios",
+        "dos",
+        "port",
+        "tasm"
+      ]
+    },
+    {
+      "id": "labs",
+      "title": "Lab activities",
+      "label": "PRACTICE",
+      "description": "Numbered exercises, sample programs, and lesson problem sets.",
+      "keywords": [
+        "exercise",
+        "sample",
+        "problem",
+        "lesson",
+        ".asm"
+      ]
+    }
+  ]
+}

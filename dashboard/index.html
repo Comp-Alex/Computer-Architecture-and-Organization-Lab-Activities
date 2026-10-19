@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b1220">
+    <meta name="description" content="A searchable dashboard for computer architecture topics, memory systems, instruction sets, and assembly lab activities.">
+    <title>Computer Architecture Lab | Dashboard</title>
+    <link rel="icon" href="assets/architecture-mark.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Computer Architecture Lab dashboard">
+        <span class="brand-mark" aria-hidden="true">CA</span>
+        <span>COMPUTER ARCHITECTURE <span class="brand-muted">/ LAB</span></span>
+      </a>
+      <nav class="top-links" aria-label="Main navigation">
+        <a class="active" href="#overview">Overview</a>
+        <a href="#topics">Topics</a>
+        <a href="#lessons">Lessons</a>
+        <a href="../README.md">Repository README</a>
+      </nav>
+      <a class="github-link" href="https://github.com/Comp-Alex/Computer-Architecture-and-Organization-Lab-Activities" aria-label="Open repository on GitHub">
+        <span aria-hidden="true">GH</span>
+      </a>
+    </header>
+
+    <main id="overview">
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="status-dot"></span> LABORATORY FIELD GUIDE <span class="eyebrow-rule"></span> 8086 / DOS
+          </div>
+          <h1>Inside the<br><span>machine.</span></h1>
+          <p class="hero-description">A hands-on map of computer architecture, from the CPU and memory model to the instructions that bring each lab to life.</p>
+          <a class="hero-action" href="#lessons">Explore the labs <span aria-hidden="true">-&gt;</span></a>
+          <div class="hero-footnote"><span class="mono" id="diagram-lesson-range">--</span> &nbsp; LESSONS, ONE SYSTEM</div>
+        </div>
+        <div class="hero-visual" role="img" aria-label="Illustration of CPU, memory, and I/O connected on a computer architecture bus">
+          <div class="visual-grid"></div>
+          <div class="diagram-label label-cpu"><span>01</span> PROCESSOR</div>
+          <div class="diagram-label label-memory"><span>02</span> MEMORY</div>
+          <div class="diagram-label label-io"><span>03</span> I/O</div>
+          <svg class="architecture-svg" viewBox="0 0 640 470" fill="none" aria-hidden="true">
+            <path class="bus" d="M122 219H210M430 219H518M320 105V165M320 273V361M210 219H185V335H455V219H430" />
+            <path class="bus bus-thin" d="M320 105V67H512M320 361V411H129M518 219V124H560" />
+            <circle class="bus-node" cx="320" cy="219" r="5"/>
+            <circle class="bus-node" cx="210" cy="219" r="5"/>
+            <circle class="bus-node" cx="430" cy="219" r="5"/>
+            <rect class="block block-cpu" x="210" y="165" width="220" height="108" rx="5"/>
+            <path class="cpu-lines" d="M233 189H274M233 205H263M233 221H280M233 237H257M233 253H270"/>
+            <text class="cpu-title" x="300" y="205">CPU</text>
+            <text class="cpu-sub" x="300" y="226">8086 / 16-BIT</text>
+            <path class="cpu-core" d="M395 191L408 219L395 247M414 193V245"/>
+            <rect class="block block-memory" x="245" y="25" width="150" height="80" rx="4"/>
+            <text class="node-title" x="320" y="60" text-anchor="middle">MEMORY</text>
+            <text class="node-sub" x="320" y="79" text-anchor="middle">DATA / STACK</text>
+            <path class="memory-lines" d="M270 89H370M281 47V83M300 47V83M319 47V83M338 47V83M357 47V83"/>
+            <rect class="block block-io" x="518" y="175" width="104" height="88" rx="4"/>
+            <text class="node-title" x="570" y="211" text-anchor="middle">I / O</text>
+            <text class="node-sub" x="570" y="232" text-anchor="middle">DOS · BIOS</text>
+            <path class="io-dot" d="M535 247H553M561 247H579M587 247H605"/>
+            <rect class="block block-lab" x="72" y="175" width="112" height="88" rx="4"/>
+            <text class="node-title" x="128" y="211" text-anchor="middle">LABS</text>
+            <text class="node-sub" id="diagram-exercise-count" x="128" y="232" text-anchor="middle">-- EXERCISES</text>
+            <circle class="pulse-ring" cx="320" cy="219" r="147"/>
+            <circle class="pulse-ring pulse-ring-two" cx="320" cy="219" r="171"/>
+            <text class="signal signal-one" x="146" y="324">BUS / ADDRESS</text>
+            <text class="signal signal-two" x="410" y="411">INSTRUCTION FLOW</text>
+            <circle class="signal-dot" cx="185" cy="335" r="4"/>
+            <circle class="signal-dot signal-dot-two" cx="475" cy="219" r="4"/>
+            <circle class="signal-dot signal-dot-three" cx="320" cy="361" r="4"/>
+          </svg>
+          <div class="visual-caption">SYSTEM MAP <span>FIG. 01</span></div>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Repository statistics">
+        <div class="metric"><span class="metric-label">LESSONS</span><strong id="stat-lessons">--</strong><span class="metric-note">from setup to I/O</span></div>
+        <div class="metric"><span class="metric-label">EXERCISES</span><strong id="stat-exercises">--</strong><span class="metric-note">numbered lab work</span></div>
+        <div class="metric"><span class="metric-label">ASM SOURCES</span><strong id="stat-assembly">--</strong><span class="metric-note">ready to explore</span></div>
+        <div class="metric"><span class="metric-label">EXERCISE GUIDES</span><strong id="stat-guides">--</strong><span class="metric-note">documented activities</span></div>
+      </section>
+
+      <section class="section topics-section" id="topics">
+        <div class="section-heading">
+          <div><div class="section-kicker">THE KNOWLEDGE MAP <span>01 / 02</span></div><h2>Four ways in.</h2></div>
+          <p>Follow a concept across the architecture or jump straight into the practical work.</p>
+        </div>
+        <div class="topic-grid">
+          <a class="topic-card topic-cpu" href="#lessons" data-topic="cpu">
+            <span class="topic-index">01 <span class="topic-arrow">-&gt;</span></span>
+            <span class="topic-glyph glyph-chip" aria-hidden="true">CPU</span>
+            <span class="topic-title">CPU architecture</span>
+            <span class="topic-description">8086 foundations, registers, control flow, and processor services.</span>
+            <span class="topic-meta" data-topic-count="cpu">PROCESSOR / -- LESSONS</span>
+          </a>
+          <a class="topic-card topic-memory" href="#lessons" data-topic="memory">
+            <span class="topic-index">02 <span class="topic-arrow">-&gt;</span></span>
+            <span class="topic-glyph glyph-memory" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            <span class="topic-title">Memory systems</span>
+            <span class="topic-description">Segmented programs, data and stack areas, and input buffers.</span>
+            <span class="topic-meta" data-topic-count="memory">DATA / -- LESSONS</span>
+          </a>
+          <a class="topic-card topic-instruction" href="#lessons" data-topic="instructions">
+            <span class="topic-index">03 <span class="topic-arrow">-&gt;</span></span>
+            <span class="topic-glyph glyph-instruction" aria-hidden="true">MOV<br>INT</span>
+            <span class="topic-title">Instruction sets</span>
+            <span class="topic-description">Assembly instructions, DOS and BIOS interrupts, and I/O.</span>
+            <span class="topic-meta" data-topic-count="instructions">X86 / -- LESSONS</span>
+          </a>
+          <a class="topic-card topic-labs" href="#lessons" data-topic="labs">
+            <span class="topic-index">04 <span class="topic-arrow">-&gt;</span></span>
+            <span class="topic-glyph glyph-labs" aria-hidden="true"><b></b><b></b><b></b><b></b></span>
+            <span class="topic-title">Lab activities</span>
+            <span class="topic-description">Numbered exercises, sample programs, and problem sets.</span>
+            <span class="topic-meta" data-topic-count="labs">PRACTICE / -- FILES</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section lessons-section" id="lessons">
+        <div class="section-heading lessons-heading">
+          <div><div class="section-kicker">FROM CONCEPT TO CODE <span>02 / 02</span></div><h2>Lab index<span class="heading-period">.</span></h2></div>
+          <p>Search lesson titles, topics, or filenames. Every entry links back to its source.</p>
+        </div>
+        <div class="lesson-toolbar">
+          <label class="search-box">
+            <span class="search-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Search lessons and assembly files</span>
+            <input id="lesson-search" type="search" placeholder="Search lessons, topics, files..." autocomplete="off">
+            <kbd>/</kbd>
+          </label>
+          <div class="filter-list" role="group" aria-label="Filter activities">
+            <button class="filter-button active" type="button" data-filter="all" aria-pressed="true">All <span id="filter-all-count">--</span></button>
+            <button class="filter-button" type="button" data-filter="exercises" aria-pressed="false">Exercises</button>
+            <button class="filter-button" type="button" data-filter="samples" aria-pressed="false">Samples</button>
+          </div>
+        </div>
+        <p id="results-summary" class="results-summary" aria-live="polite"></p>
+        <div id="lesson-list" class="lesson-list" aria-live="polite">
+          <div class="loading-state"><span></span> Scanning lesson files...</div>
+        </div>
+        <p id="empty-state" class="empty-state" hidden>No lessons or files match that search. Try another term.</p>
+        <div class="index-footer"><span>END OF INDEX</span><a href="../README.md">Full repository README <span aria-hidden="true">-&gt;</span></a></div>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <a class="brand footer-brand" href="./"><span class="brand-mark" aria-hidden="true">CA</span><span>COMPUTER ARCHITECTURE <span class="brand-muted">/ LAB</span></span></a>
+      <span>8086 ASSEMBLY <i></i> DOS / TASM <i></i> BUILT FOR LEARNING</span>
+      <a href="../README.md">REPOSITORY INDEX <span aria-hidden="true">-&gt;</span></a>
+    </footer>
+  </body>
+</html>
