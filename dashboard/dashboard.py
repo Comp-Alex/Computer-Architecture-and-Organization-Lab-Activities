@@ -7,7 +7,12 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import sys
+import urllib.error
+import urllib.request
+from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -61,6 +66,25 @@ SOURCE_EXTENSIONS = {
     ".tsx",
 }
 EXECUTION_CHECK_EXTENSIONS = {".bat", ".ps1", ".py", ".sh", ".yml", ".yaml"}
+AUTOMATION_SUBJECT_PREFIX = "docs: refresh generated repository dashboard"
+TODO_PATTERN = re.compile(r"\b(TODO|FIXME)\b\s*[:\-]?\s*(.*)", re.IGNORECASE)
+FRAMEWORK_MARKERS = {
+    "Django": ("django",),
+    "Flask": ("flask",),
+    "FastAPI": ("fastapi",),
+    "React": ('\"react\"', "from 'react'", 'from \"react\"'),
+    "Vue": ('\"vue\"', "from 'vue'", 'from \"vue\"'),
+    "Angular": ('\"@angular/core\"',),
+    "Spring": ("spring-boot", "org.springframework"),
+    "ASP.NET": ("microsoft.aspnetcore", "<project sdk=\"microsoft.net.sdk.web\""),
+}
+HARDWARE_MARKERS = {
+    "8086 / x86": ("8086", "x86", "tasm", "emu8086"),
+    "Arduino": ("arduino", "<arduino.h>"),
+    "Raspberry Pi": ("raspberry pi", "raspberry-pi"),
+    "AVR": ("avr-gcc", "<avr/"),
+    "ARM": ("arm-none-eabi", "cortex-m"),
+}
 
 
 def natural_key(value: str) -> list[int | str]:
@@ -95,6 +119,244 @@ def collect_files(root: Path, excluded_directories: list[str]) -> list[Path]:
             if file_path.is_file() and not file_path.is_symlink():
                 files.append(file_path)
     return sorted(files, key=lambda path: natural_key(path.relative_to(root).as_posix()))
+
+
+def git_output(root: Path, *arguments: str) -> str:
+    try:
+        result = subprocess.run(
+            ["git", *arguments],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=15,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    return result.stdout.strip()
+
+
+def parse_git_date(value: str) -> datetime | None:
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return parsed.astimezone(timezone.utc)
+
+
+def github_repository(config: dict[str, Any]) -> str | None:
+    repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    if repository:
+        return repository
+    match = re.match(r"https?://github\.com/([^/]+/[^/#]+)", config.get("repository_url", ""))
+    return match.group(1).removesuffix(".git") if match else None
+
+
+def github_counts(config: dict[str, Any]) -> dict[str, Any]:
+    repository = github_repository(config)
+    if not repository or os.environ.get("GITHUB_ACTIONS") != "true":
+        return {"open_issues": None, "open_pull_requests": None, "open_issue_items": []}
+
+    headers = {"Accept": "application/vnd.github+json", "User-Agent": "repository-dashboard"}
+    token = os.environ.get("GITHUB_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    counts: dict[str, int | None] = {}
+    issue_items = []
+    for key, query in (("open_issues", "is:issue is:open"), ("open_pull_requests", "is:pr is:open")):
+        url = f"https://api.github.com/search/issues?q=repo:{repository}+{query}"
+        request = urllib.request.Request(url, headers=headers)
+        try:
+            with urllib.request.urlopen(request, timeout=10) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+            counts[key] = int(payload["total_count"])
+            if key == "open_issues":
+                issue_items = [
+                    {"title": item.get("title", "Untitled issue"), "url": item.get("html_url", "")}
+                    for item in payload.get("items", [])[:10]
+                ]
+        except (OSError, urllib.error.URLError, ValueError, KeyError, TypeError):
+            counts[key] = None
+    return {**counts, "open_issue_items": issue_items}
+
+
+def analyze_git(root: Path, config: dict[str, Any]) -> dict[str, Any]:
+    git_available = git_output(root, "rev-parse", "--is-inside-work-tree") == "true"
+    log = git_output(root, "log", "--all", "--format=%H%x1f%an%x1f%aI%x1f%s", "--name-status")
+    commits: list[dict[str, Any]] = []
+    current_commit: dict[str, Any] | None = None
+    commit_files: dict[str, dict[str, str]] = {}
+    for line in log.splitlines():
+        fields = line.split("\x1f", 3)
+        if len(fields) == 4:
+            commit_hash, author, date_text, subject = fields
+            committed_at = parse_git_date(date_text)
+            if not committed_at:
+                current_commit = None
+                continue
+            current_commit = {
+                "hash": commit_hash,
+                "author": author,
+                "date": committed_at,
+                "subject": subject,
+            }
+            commits.append(current_commit)
+            commit_files[commit_hash] = {}
+        elif line and current_commit:
+            status, separator, filename = line.partition("\t")
+            if separator:
+                commit_files[current_commit["hash"]][filename] = status
+        else:
+            continue
+
+    excluded_prefix = config.get("automation_commit_subject_prefix", AUTOMATION_SUBJECT_PREFIX)
+    project_commits = [
+        commit for commit in commits
+        if not commit["subject"].startswith(excluded_prefix)
+    ]
+    now = datetime.now(timezone.utc)
+    last_7_days = [commit for commit in project_commits if (now - commit["date"]).days < 7]
+    last_30_days = [commit for commit in project_commits if (now - commit["date"]).days < 30]
+    previous_30_days = [
+        commit for commit in project_commits
+        if 30 <= (now - commit["date"]).days < 60
+    ]
+    branches = {
+        branch for branch in git_output(
+            root, "for-each-ref", "--format=%(refname:short)", "refs/heads", "refs/remotes"
+        ).splitlines()
+        if not branch.endswith("/HEAD")
+    }
+    modified_files: Counter[str] = Counter()
+    folder_activity: Counter[str] = Counter()
+    for commit in project_commits:
+        for filename in commit_files.get(commit["hash"], {}):
+            modified_files[filename] += 1
+            parent = Path(filename).parent.as_posix()
+            folder_activity[parent if parent != "." else "Repository root"] += 1
+
+    activity_days = Counter(commit["date"].date().isoformat() for commit in project_commits)
+    activity_months = Counter(commit["date"].strftime("%Y-%m") for commit in project_commits)
+    oldest = min((commit["date"] for commit in project_commits), default=None)
+    latest = max(project_commits, key=lambda commit: commit["date"], default=None)
+    recent = sorted(project_commits, key=lambda commit: commit["date"], reverse=True)[:8]
+    recent_files = [
+        (commit, filename, status)
+        for commit in recent
+        for filename, status in commit_files.get(commit["hash"], {}).items()
+    ]
+    issues = github_counts(config)
+
+    return {
+        "available": git_available,
+        "total_commits": len(project_commits),
+        "commit_growth_30_days": len(last_30_days) - len(previous_30_days),
+        "contributors": len({commit["author"] for commit in project_commits}),
+        "branches": len(branches),
+        "repository_age_days": (now.date() - oldest.date()).days if oldest else None,
+        "last_commit": {
+            "hash": latest["hash"][:7],
+            "author": latest["author"],
+            "date": latest["date"].date().isoformat(),
+            "subject": latest["subject"],
+        } if latest else None,
+        "commits_7_days": len(last_7_days),
+        "commits_30_days": len(last_30_days),
+        "most_modified_files": [
+            {"path": path, "commits": count}
+            for path, count in modified_files.most_common(5)
+        ],
+        "most_active_folders": [
+            {"path": path, "commits": count}
+            for path, count in folder_activity.most_common(5)
+        ],
+        "most_active_day": activity_days.most_common(1)[0][0] if activity_days else None,
+        "most_active_month": activity_months.most_common(1)[0][0] if activity_months else None,
+        "active_folders_30_days": sorted({
+            Path(filename).parent.as_posix()
+            for commit in last_30_days
+            for filename in commit_files.get(commit["hash"], {})
+        }),
+        "recent_commits": [
+            {
+                "hash": commit["hash"][:7],
+                "author": commit["author"],
+                "date": commit["date"].date().isoformat(),
+                "subject": commit["subject"],
+            }
+            for commit in recent
+        ],
+        "recent_additions": sorted({filename for _, filename, status in recent_files if status.startswith("A")})[:10],
+        "recent_improvements": sorted({filename for _, filename, status in recent_files if status.startswith("M")})[:10],
+        **issues,
+    }
+
+
+def detect_project_intelligence(files: list[Path], root: Path) -> dict[str, Any]:
+    names = {path.name.lower() for path in files}
+    corpus = "\n".join(
+        read_text(path)[:200_000].lower()
+        for path in files
+        if path.suffix.lower() in SOURCE_EXTENSIONS | {".json", ".toml", ".xml", ".txt", ".md"}
+    )
+    project_types = []
+    if any(path.name.lower().startswith("lesson") and path.is_dir() for path in root.iterdir()):
+        project_types.append("Educational / lab repository")
+    if any(path.suffix.lower() in SOURCE_EXTENSIONS for path in files):
+        project_types.append("Source-code project")
+    if ".md" in {path.suffix.lower() for path in files}:
+        project_types.append("Documentation repository")
+    if not project_types:
+        project_types.append("Repository (type not inferred)")
+    frameworks = [
+        framework for framework, markers in FRAMEWORK_MARKERS.items()
+        if any(marker in corpus for marker in markers)
+    ]
+    hardware = [
+        platform for platform, markers in HARDWARE_MARKERS.items()
+        if any(marker in corpus for marker in markers)
+    ]
+    libraries: set[str] = set()
+    if "requirements.txt" in names:
+        libraries.update(
+            line.split("[", 1)[0].split("=", 1)[0].split(">", 1)[0].strip()
+            for line in read_text(next(path for path in files if path.name.lower() == "requirements.txt")).splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        )
+    if "package.json" in names:
+        for path in files:
+            if path.name.lower() == "package.json":
+                try:
+                    package_data = json.loads(read_text(path))
+                    libraries.update(package_data.get("dependencies", {}))
+                    libraries.update(package_data.get("devDependencies", {}))
+                except (json.JSONDecodeError, AttributeError):
+                    pass
+    return {
+        "project_types": project_types,
+        "frameworks": sorted(frameworks),
+        "hardware_platforms": sorted(hardware),
+        "libraries": sorted(library for library in libraries if library),
+    }
+
+
+def scan_todos(files: list[Path], root: Path) -> list[dict[str, str]]:
+    todos = []
+    for path in files:
+        if path.suffix.lower() not in SOURCE_EXTENSIONS:
+            continue
+        for line_number, line in enumerate(read_text(path).splitlines(), start=1):
+            match = TODO_PATTERN.search(line)
+            if match:
+                todos.append({
+                    "kind": match.group(1).upper(),
+                    "path": path.relative_to(root).as_posix(),
+                    "line": str(line_number),
+                    "text": match.group(2).strip() or line.strip(),
+                })
+    return todos
 
 
 def first_lesson_paragraph(readme: Path, fallback: str) -> str:
@@ -403,6 +665,17 @@ def build_catalog(root: Path, config: dict[str, Any]) -> dict[str, Any]:
     source_counts = dict(
         sorted(source_counts.items(), key=lambda item: (-item[1], item[0].lower()))
     )
+    source_files = [path for path in all_files if path.suffix.lower() in SOURCE_EXTENSIONS]
+    nonempty_code_lines = sum(
+        sum(bool(line.strip()) for line in read_text(path).splitlines())
+        for path in source_files
+    )
+    documented_modules = sum((path / "README.md").is_file() for path in lesson_dirs)
+    test_files = [
+        path for path in all_files
+        if re.search(r"(^|[/_-])(test|tests|spec|specs)([/_.-]|$)", path.relative_to(root).as_posix(), re.I)
+    ]
+    coverage_files = [path for path in all_files if path.name.lower() in {"coverage.xml", "coverage.json", "lcov.info"}]
 
     harness_pattern = re.compile(
         r"(?:dosbox|emu8086|tasm.{0,40}(?:test|smoke|run)|(?:test|smoke|run).{0,40}tasm)",
@@ -417,6 +690,45 @@ def build_catalog(root: Path, config: dict[str, Any]) -> dict[str, Any]:
 
     project_name = config.get("project_name", root.name.replace("-", " "))
     purpose = infer_purpose(project_name, lessons, assembly_files, markdown_files)
+    git = analyze_git(root, config)
+    project_intelligence = detect_project_intelligence(all_files, root)
+    todos = scan_todos(all_files, root)
+    lesson_status = []
+    active_folders = set(git["active_folders_30_days"])
+    for lesson in lessons:
+        has_readme = (root / lesson["name"] / "README.md").is_file()
+        all_guides_present = all(exercise["guide"] for exercise in lesson["exercises"])
+        lesson_status.append({
+            "name": lesson["title"],
+            "status": (
+                "Active" if lesson["name"] in active_folders
+                else "Documented" if has_readme and all_guides_present
+                else "In progress"
+            ),
+            "evidence": (
+                "Changed in a commit during the last 30 days."
+                if lesson["name"] in active_folders
+                else "Lesson README and exercise guides are present."
+                if has_readme and all_guides_present
+                else "Lesson README or one or more exercise guides are missing."
+            ),
+        })
+    issues_or_todos = [
+        {
+            "status": todo["kind"],
+            "title": f"{todo['path']}:{todo['line']}",
+            "detail": todo["text"],
+        }
+        for todo in todos
+    ]
+    issues_or_todos.extend(
+        {
+            "status": "ISSUE",
+            "title": item["title"],
+            "detail": f"[Open issue]({item['url']})" if item["url"] else "Open GitHub issue.",
+        }
+        for item in git["open_issue_items"]
+    )
     achievements = []
     if lessons:
         achievements.append(
@@ -444,12 +756,19 @@ def build_catalog(root: Path, config: dict[str, Any]) -> dict[str, Any]:
         for lesson in lessons
         for sample in lesson["samples"]
     )
-    roadmap = build_roadmap(
-        lessons,
-        assembly_files,
-        sample_guide_count,
-        execution_harness_found,
+    roadmap = issues_or_todos
+    complexity = {
+        "source_files": len(source_files),
+        "nonempty_code_lines": nonempty_code_lines,
+        "top_level_directories": sum(path.is_dir() for path in root.iterdir()),
+        "lesson_modules": len(lessons),
+    }
+    complexity["maturity"] = (
+        "Established" if git["total_commits"] >= 100 and git["contributors"] >= 3
+        else "Growing" if git["total_commits"] >= 10 or len(lessons) >= 3
+        else "Early"
     )
+    complexity["maturity_basis"] = "Heuristic based on project commit, contributor, and module counts."
     return {
         "project": project_name,
         "repository_url": config.get("repository_url", ""),
@@ -461,6 +780,33 @@ def build_catalog(root: Path, config: dict[str, Any]) -> dict[str, Any]:
         "topics": topics,
         "roadmap": roadmap,
         "achievements": achievements,
+        "repository": git,
+        "development": {
+            "languages": [
+                {"name": language, "files": count}
+                for language, count in source_counts.items()
+            ],
+            "documentation": {
+                "markdown_files": markdown_files,
+                "documented_modules": documented_modules,
+                "total_modules": len(lesson_dirs),
+                "coverage_percent": round(100 * documented_modules / len(lesson_dirs), 1)
+                if lesson_dirs else None,
+            },
+            "testing": {
+                "test_files": len(test_files),
+                "coverage_report": bool(coverage_files),
+                "coverage_percent": None,
+            },
+        },
+        "project_intelligence": project_intelligence,
+        "learning": {
+            "modules": lesson_status,
+            "documented_modules": [item["name"] for item in lesson_status if item["status"] == "Documented"],
+            "active_modules": [item["name"] for item in lesson_status if item["status"] == "Active"],
+        },
+        "insights": complexity,
+        "todos": todos,
         "totals": {
             "files": len(all_files),
             "source_files": sum(source_counts.values()),
